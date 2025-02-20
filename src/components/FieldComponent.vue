@@ -1,7 +1,12 @@
 <template>
    <article>
         <label v-bind:for="data.id"></label>
-        <input 
+        <input
+            :id="data.id" 
+            @input="(event:any) => $emit('fieldChange', { 
+                id: data.id, 
+                val: event.target!.value  
+            })"
             v-bind:type="data.type ? data.type : 'text'" 
             v-bind:placeholder="data.placeholder"
             v-bind:class="'input ' + (data.class ? data.class : '')"
@@ -17,6 +22,7 @@ interface FieldComponentProperties {
 }
 
 defineProps<FieldComponentProperties>()
+defineEmits(['fieldChange'])
 
 /* Créer un fichier qui représente 
 un composant réutilisable : bouton 

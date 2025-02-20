@@ -2,16 +2,25 @@
     <main class="custom-main login__main">
         <section class="animate__animated animate__slideInUp">
             <FormComponent :data="formData"/>
-            <small class="login-choice">Pas encore incrit(e) ? Inscrivez-vous</small>
+            <small class="login-choice">Pas encore incrit(e) ? <a @click="shiftFormHandler">Inscrivez-vous</a></small>
         </section>
     </main>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
 import FormComponent from
  "../components/FormComponent.vue"
 import type FormInterface from "../interfaces/FormInterface";
+import { useAuthStore } from "../stores/auth-store"
+import { storeToRefs } from "pinia";
 
+const authStore  = useAuthStore()
+const { getToken } = storeToRefs(authStore)
+
+
+// reactives/ ref
+
+const shiftForm = ref(false)
 
 const formData = reactive<FormInterface>({
     fields: [
@@ -42,7 +51,33 @@ const formData = reactive<FormInterface>({
     ]
 })
 
+const shiftFormHandler = () => {
 
+    if(shiftForm.value == false) {
+        
+        formData.fields.unshift(
+            {
+                id: "firstName",
+                type: "text",
+                placeholder: "Entrer votre prénom"
+            },
+            {
+                id: "lastName",
+                type: "text",
+                placeholder: "Entrer votre nom"
+            }
+        ) 
+    } else {
+        formData.fields.shift()
+        formData.fields.shift() 
+    }
+
+    shiftForm.value = !shiftForm.value
+}
+
+const submitHandler = () => {
+    
+}
 
 </script>
 <style lang="scss">

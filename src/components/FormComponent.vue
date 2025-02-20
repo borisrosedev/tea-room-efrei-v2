@@ -1,7 +1,8 @@
 <template>
     <form class="custom-form">
         <section class="custom-form__fields-section">
-            <FieldComponent 
+            <FieldComponent
+                @field-change="onFieldChange" 
                 v-for="(field,index) in data.fields" 
                 :key="index"
                 :data="field"
@@ -26,5 +27,11 @@ interface FormComponentProperties {
 }
 
 defineProps<FormComponentProperties>()
+
+const onFieldChange = ({ id, val }:{ id: string, val: string }) => {
+    console.log('id', id)
+    console.log('val', val)
+}
+
 
 </script>
